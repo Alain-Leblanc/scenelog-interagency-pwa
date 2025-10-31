@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SceneLog - Connexion Agent</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #0056b3; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .login-container { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); width: 90%; max-width: 350px; text-align: center; }
+        h1 { color: #0056b3; margin-bottom: 25px; font-size: 1.5em; }
+        input[type="email"], input[type="password"] { width: 100%; padding: 12px; margin: 8px 0 15px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background-color: #28a745; color: white; padding: 14px 20px; margin: 8px 0; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 1.1em; }
+        button:hover { background-color: #1e7e34; }
+        #message { color: red; margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Connexion Sécurisée SceneLog</h1>
+        
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Identifiant Agent (Email)" required>
+            <input type="password" id="password" placeholder="Mot de Passe" required>
+            <button type="submit">ACCÉDER AU TABLEAU DE BORD</button>
+            <div id="message"></div>
+        </form>
+
+        <p style="margin-top: 20px; font-size: 0.8em; color: #666;">
+            Prototype développé par Alain Leblanc.
+        </p>
+    </div>
+</body>
+</html>
