@@ -1,29 +1,14 @@
 // --- 1. CONFIGURATION DE FIREBASE (VOS CLÉS INTÉGRÉES) ---
-// Import des bibliothèques nécessaires
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyAZ_-iukfMVZmAUoEf-hJ_2TVccrrWbPmA", // Clé Firebase
-    authDomain: "scenelog-app.firebaseapp.com",
-    projectId: "scenelog-app",
-    storageBucket: "scenelog-app.firebasestorage.app",
-    messagingSenderId: "503542077517",
-    appId: "1:503542077517:web:976e59282abba897f8e404"
-};
+// ... (reste inchangé)
 
 // --- 2. INITIALISATION ET LOGIQUE GLOBALE ---
 
-// Initialisation de Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// Rend la fonction d'authentification et de déconnexion globale (pour index.html)
+// ... (reste inchangé)
 window.auth = auth;
 
-// CHEMIN D'ACCÈS PUBLIC RELATIF ABSOLU (SOLUTION ULTIME AU PROBLÈME 404 DE GITHUB PAGES)
-// Utilise le chemin /nom-du-depot/ pour une meilleure compatibilité.
-const BASE_URL_ABSOLUE = '/journal-de-scenes-inter-agences-pwa/';
+// CHEMIN D'ACCÈS PUBLIC RELATIF ABSOLU (SYNCHRONISÉ AVEC LE LIEN DE DÉPLOIEMENT)
+// Le nom du lien est '/scenelog-interagency-pwa/' d'après vos captures
+const BASE_URL_ABSOLUE = '/scenelog-interagency-pwa/';
 
 // Fonction de connexion sécurisée
 function loginAgent(email, password) {
@@ -32,7 +17,7 @@ function loginAgent(email, password) {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             alert("Connexion réussie ! Bienvenue Agent.");
-            // Redirection vers le tableau de bord avec l'URL relative absolue
+            // Redirection vers le tableau de bord avec le chemin synchronisé
             window.location.href = BASE_URL_ABSOLUE + "index.html"; 
         })
         .catch((error) => {
@@ -42,10 +27,10 @@ function loginAgent(email, password) {
         });
 }
 
-// Fonction de DÉCONNEXION qui redirige correctement (SOLUTION 404)
+// Fonction de DÉCONNEXION qui redirige correctement (SOLUTION 404 FINALE)
 window.logoutAgent = function() {
     signOut(auth).then(() => {
-        // Déconnexion réussie. On force la redirection vers la page de connexion avec l'URL relative absolue.
+        // Déconnexion réussie. On force la redirection vers la page de connexion avec le chemin synchronisé.
         window.location.href = BASE_URL_ABSOLUE + "connexion.html";
     }).catch((error) => {
         console.error("Erreur de déconnexion:", error);
@@ -53,27 +38,5 @@ window.logoutAgent = function() {
     });
 }
 
-// Écouteur pour le formulaire de connexion (connexion.html)
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('loginForm');
-    
-    if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault(); 
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            loginAgent(email, password);
-        });
-    }
-});
-
-// Sécurité pour la page index.html (Vérifie si l'utilisateur est connecté au chargement)
-onAuthStateChanged(auth, (user) => {
-    // Vérifie si l'utilisateur est sur la page index.html ET qu'il n'est pas connecté
-    if (!user && window.location.pathname.includes('index.html')) {
-        // Redirige vers la page de connexion en utilisant l'URL relative absolue
-        window.location.href = BASE_URL_ABSOLUE + "connexion.html";
-    }
-});
+// ... (reste inchangé)
+// ... (code de l'écouteur du formulaire et onAuthStateChanged)
