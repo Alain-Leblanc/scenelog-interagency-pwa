@@ -4,7 +4,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAZ_-iukfMVZmAUoEf-hJ_2TVccrrWbPmA",
+    apiKey: "AIzaSyAZ_-iukfMVZmAUoEf-hJ_2TVccrrWbPmA", // Clé Firebase
     authDomain: "scenelog-app.firebaseapp.com",
     projectId: "scenelog-app",
     storageBucket: "scenelog-app.firebasestorage.app",
@@ -18,11 +18,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Rendre la fonction d'authentification et de déconnexion globale pour être utilisée par index.html
+// Rend la fonction d'authentification et de déconnexion globale (pour index.html)
 window.auth = auth;
 
-// Chemin d'accès PUBLIC correct pour votre dépôt GitHub Pages (SOLUTION AU PROBLÈME 404)
-const PUBLIC_PATH = '/journal-de-scenes-inter-agences-pwa/';
+// CHEMIN D'ACCÈS PUBLIC ABSOLU (avec le domaine - SOLUTION AU PROBLÈME 404)
+const BASE_URL_ABSOLUE = 'https://alain-leblanc.github.io/journal-de-scenes-inter-agences-pwa/';
 
 // Fonction de connexion sécurisée
 function loginAgent(email, password) {
@@ -31,8 +31,8 @@ function loginAgent(email, password) {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             alert("Connexion réussie ! Bienvenue Agent.");
-            // Redirection vers le tableau de bord avec le chemin public
-            window.location.href = PUBLIC_PATH + "index.html"; 
+            // Redirection vers le tableau de bord avec l'URL absolue
+            window.location.href = BASE_URL_ABSOLUE + "index.html"; 
         })
         .catch((error) => {
             const errorMessage = "Erreur de connexion : Email ou mot de passe incorrect.";
@@ -44,8 +44,8 @@ function loginAgent(email, password) {
 // Fonction de DÉCONNEXION qui redirige correctement (SOLUTION 404)
 window.logoutAgent = function() {
     signOut(auth).then(() => {
-        // Déconnexion réussie. On force la redirection vers la page de connexion
-        window.location.href = PUBLIC_PATH + "connexion.html";
+        // Déconnexion réussie. On force la redirection vers la page de connexion avec l'URL absolue.
+        window.location.href = BASE_URL_ABSOLUE + "connexion.html";
     }).catch((error) => {
         console.error("Erreur de déconnexion:", error);
         alert("Erreur lors de la déconnexion.");
@@ -71,8 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // Sécurité pour la page index.html (Vérifie si l'utilisateur est connecté au chargement)
 onAuthStateChanged(auth, (user) => {
     // Vérifie si l'utilisateur est sur la page index.html ET qu'il n'est pas connecté
+    // Nous vérifions si l'URL actuelle contient "index.html" pour ne pas boucler sur connexion.html
     if (!user && window.location.pathname.includes('index.html')) {
-        // Redirige vers la page de connexion en utilisant le chemin public
-        window.location.href = PUBLIC_PATH + "connexion.html";
+        // Redirige vers la page de connexion en utilisant l'URL absolue
+        window.location.href = BASE_URL_ABSOLUE + "connexion.html";
     }
 });
