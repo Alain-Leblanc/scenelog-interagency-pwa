@@ -18,10 +18,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Rend la fonction 'auth' accessible à l'extérieur
+// Rendre la fonction d'authentification et de déconnexion globale pour être utilisée par index.html
 window.auth = auth;
 
-// Chemin d'accès PUBLIC correct pour votre dépôt GitHub Pages
+// Chemin d'accès PUBLIC correct pour votre dépôt GitHub Pages (SOLUTION AU PROBLÈME 404)
 const PUBLIC_PATH = '/journal-de-scenes-inter-agences-pwa/';
 
 // Fonction de connexion sécurisée
@@ -31,7 +31,7 @@ function loginAgent(email, password) {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             alert("Connexion réussie ! Bienvenue Agent.");
-            // Utilise le chemin public pour la redirection vers le tableau de bord
+            // Redirection vers le tableau de bord avec le chemin public
             window.location.href = PUBLIC_PATH + "index.html"; 
         })
         .catch((error) => {
@@ -41,11 +41,10 @@ function loginAgent(email, password) {
         });
 }
 
-// Nouvelle fonction de DÉCONNEXION qui redirige correctement (SOLUTION 404)
+// Fonction de DÉCONNEXION qui redirige correctement (SOLUTION 404)
 window.logoutAgent = function() {
     signOut(auth).then(() => {
         // Déconnexion réussie. On force la redirection vers la page de connexion
-        // en utilisant le chemin d'accès public.
         window.location.href = PUBLIC_PATH + "connexion.html";
     }).catch((error) => {
         console.error("Erreur de déconnexion:", error);
