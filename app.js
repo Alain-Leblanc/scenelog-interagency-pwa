@@ -1,7 +1,7 @@
 // --- 1. CONFIGURATION DE FIREBASE (VOS CLÉS INTÉGRÉES) ---
-// Import des bibliothèques nécessaires à l'authentification (doit être chargé avant ce fichier JS)
+// Import des bibliothèques nécessaires
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAZ_-iukfMVZmAUoEf-hJ_2TVccrrWbPmA",
@@ -16,41 +16,50 @@ const firebaseConfig = {
 
 // Initialisation de Firebase
 const app = initializeApp(firebaseConfig);
-// Accès au service d'authentification
 const auth = getAuth(app);
+
+// Rend la fonction 'auth' accessible à l'extérieur (pour index.html)
+window.auth = auth;
 
 // Fonction de connexion sécurisée
 function loginAgent(email, password) {
-    // Message de chargement
     document.getElementById('message').innerText = "Connexion en cours...";
 
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            // Connexion réussie, rediriger l'agent vers le tableau de bord
             alert("Connexion réussie ! Bienvenue Agent.");
-            window.location.href = "index.html"; // Redirection vers le tableau de bord
+            window.location.href = "index.html"; 
         })
         .catch((error) => {
-            // Afficher l'erreur si la connexion échoue (mauvais email/mdp)
             const errorMessage = "Erreur de connexion : Email ou mot de passe incorrect.";
             document.getElementById('message').innerText = errorMessage;
-            console.error(error); // Pour le débug
+            console.error(error);
         });
 }
 
-// Écouteur pour le formulaire de connexion (dans connexion.html)
+// Nouvelle fonction de DÉCONNEXION qui redirige correctement
+window.logoutAgent = function() {
+    signOut(auth).then(() => {
+        // Déconnexion réussie. On force la redirection vers la page de connexion.
+        // C'est ce qui règle le problème de la 404
+        window.location.href = "connexion.html";
+    }).catch((error) => {
+        console.error("Erreur de déconnexion:", error);
+        alert("Erreur lors de la déconnexion.");
+    });
+}
+
+// Écouteur pour le formulaire de connexion (connexion.html)
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     
-    // Si le formulaire existe, on ajoute l'écouteur d'événement 'submit'
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Empêche le rechargement de la page par défaut
+            e.preventDefault(); 
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
-            // Tente la connexion avec les informations saisies
             loginAgent(email, password);
         });
     }
