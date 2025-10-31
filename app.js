@@ -1,13 +1,28 @@
 // --- 1. CONFIGURATION DE FIREBASE (VOS CLÉS INTÉGRÉES) ---
-// ... (reste inchangé)
+// Import des bibliothèques nécessaires
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAZ_-iukfMVZmAUoEf-hJ_2TVccrrWbPmA", // Clé Firebase
+    authDomain: "scenelog-app.firebaseapp.com",
+    projectId: "scenelog-app",
+    storageBucket: "scenelog-app.firebasestorage.app",
+    messagingSenderId: "503542077517",
+    appId: "1:503542077517:web:976e59282abba897f8e404"
+};
 
 // --- 2. INITIALISATION ET LOGIQUE GLOBALE ---
 
-// ... (reste inchangé)
+// Initialisation de Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Rend la fonction d'authentification et de déconnexion globale (pour index.html)
 window.auth = auth;
 
-// CHEMIN D'ACCÈS PUBLIC RELATIF ABSOLU (SYNCHRONISÉ AVEC LE LIEN DE DÉPLOIEMENT)
-// Le nom du lien est '/scenelog-interagency-pwa/' d'après vos captures
+// CHEMIN D'ACCÈS PUBLIC SYNCHRONISÉ AVEC LE LIEN DE DÉPLOIEMENT ACTIF (SOLUTION FINALE)
+// Basé sur votre lien de déploiement réel : /scenelog-interagency-pwa/
 const BASE_URL_ABSOLUE = '/scenelog-interagency-pwa/';
 
 // Fonction de connexion sécurisée
@@ -27,7 +42,7 @@ function loginAgent(email, password) {
         });
 }
 
-// Fonction de DÉCONNEXION qui redirige correctement (SOLUTION 404 FINALE)
+// Fonction de DÉCONNEXION qui redirige correctement (SOLUTION FINALE)
 window.logoutAgent = function() {
     signOut(auth).then(() => {
         // Déconnexion réussie. On force la redirection vers la page de connexion avec le chemin synchronisé.
@@ -38,5 +53,27 @@ window.logoutAgent = function() {
     });
 }
 
-// ... (reste inchangé)
-// ... (code de l'écouteur du formulaire et onAuthStateChanged)
+// Écouteur pour le formulaire de connexion (connexion.html)
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+    
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            loginAgent(email, password);
+        });
+    }
+});
+
+// Sécurité pour la page index.html (Vérifie si l'utilisateur est connecté au chargement)
+onAuthStateChanged(auth, (user) => {
+    // Vérifie si l'utilisateur est sur la page index.html ET qu'il n'est pas connecté
+    if (!user && window.location.pathname.includes('index.html')) {
+        // Redirige vers la page de connexion en utilisant l'URL synchronisée
+        window.location.href = BASE_URL_ABSOLUE + "connexion.html";
+    }
+});
