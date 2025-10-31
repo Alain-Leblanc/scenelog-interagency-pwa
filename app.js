@@ -21,8 +21,9 @@ const auth = getAuth(app);
 // Rend la fonction d'authentification et de déconnexion globale (pour index.html)
 window.auth = auth;
 
-// CHEMIN D'ACCÈS PUBLIC ABSOLU (avec le domaine - SOLUTION AU PROBLÈME 404)
-const BASE_URL_ABSOLUE = 'https://alain-leblanc.github.io/journal-de-scenes-inter-agences-pwa/';
+// CHEMIN D'ACCÈS PUBLIC RELATIF ABSOLU (SOLUTION ULTIME AU PROBLÈME 404 DE GITHUB PAGES)
+// Utilise le chemin /nom-du-depot/ pour une meilleure compatibilité.
+const BASE_URL_ABSOLUE = '/journal-de-scenes-inter-agences-pwa/';
 
 // Fonction de connexion sécurisée
 function loginAgent(email, password) {
@@ -31,7 +32,7 @@ function loginAgent(email, password) {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             alert("Connexion réussie ! Bienvenue Agent.");
-            // Redirection vers le tableau de bord avec l'URL absolue
+            // Redirection vers le tableau de bord avec l'URL relative absolue
             window.location.href = BASE_URL_ABSOLUE + "index.html"; 
         })
         .catch((error) => {
@@ -44,7 +45,7 @@ function loginAgent(email, password) {
 // Fonction de DÉCONNEXION qui redirige correctement (SOLUTION 404)
 window.logoutAgent = function() {
     signOut(auth).then(() => {
-        // Déconnexion réussie. On force la redirection vers la page de connexion avec l'URL absolue.
+        // Déconnexion réussie. On force la redirection vers la page de connexion avec l'URL relative absolue.
         window.location.href = BASE_URL_ABSOLUE + "connexion.html";
     }).catch((error) => {
         console.error("Erreur de déconnexion:", error);
@@ -71,9 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // Sécurité pour la page index.html (Vérifie si l'utilisateur est connecté au chargement)
 onAuthStateChanged(auth, (user) => {
     // Vérifie si l'utilisateur est sur la page index.html ET qu'il n'est pas connecté
-    // Nous vérifions si l'URL actuelle contient "index.html" pour ne pas boucler sur connexion.html
     if (!user && window.location.pathname.includes('index.html')) {
-        // Redirige vers la page de connexion en utilisant l'URL absolue
+        // Redirige vers la page de connexion en utilisant l'URL relative absolue
         window.location.href = BASE_URL_ABSOLUE + "connexion.html";
     }
 });
