@@ -45,7 +45,7 @@
         <div class="card status-card">
             <div class="card-title center-between">
                 <span>Statut d'Activité</span> 
-                <button id="deconnexionBtn" class="action-button danger" style="padding: 5px 10px; width: auto; font-size: 0.9em; margin: 0;">DÉCONNEXION</button>
+                <button onclick="logoutAgent()" class="action-button danger" style="padding: 5px 10px; width: auto; font-size: 0.9em; margin: 0;">DÉCONNEXION</button>
             </div>
             
             <p>Agent : **Alain Leblanc**</p>
@@ -78,9 +78,6 @@
         Prototype PWA développé par Alain Leblanc.
     </div>
 
-    <script type="module">
-        // Importe les fonctions nécessaires de Firebase
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-        
-        // Configuration Firebase (VOS CLÉS)
+    <script type="module" src="app.js"></script> 
+</body>
+</html>
