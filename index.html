@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SceneLog - Tableau de Bord Agent</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        .header { background-color: #0056b3; color: white; padding: 15px; text-align: center; }
+        .header h1 { margin: 0; font-size: 1.2em; }
+        .dashboard { padding: 20px; }
+        .card { background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; padding: 15px; }
+        .card-title { font-size: 1.1em; font-weight: bold; color: #0056b3; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .stat-value { font-size: 2em; font-weight: bold; color: #333; }
+        .stat-label { font-size: 0.9em; color: #666; }
+        .action-button { display: block; width: 100%; padding: 15px; background-color: #28a745; color: white; border: none; border-radius: 5px; text-align: center; text-decoration: none; font-size: 1.1em; margin-top: 15px; }
+        .footer { text-align: center; padding: 10px; font-size: 0.8em; color: #999; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>SceneLog PWA - Tableau de Bord Agent</h1>
+    </div>
+
+    <div class="dashboard">
+        <div class="card">
+            <div class="card-title">Statut d'Activité</div>
+            <p>Agent : **Alain Leblanc**</p>
+            <p>Date/Heure : **31/10/2025 à 21:05** (Heure de Calais)</p>
+            <a href="#" class="action-button" style="background-color: orange;">🔴 DÉCONNECTÉ (Simulé)</a>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Résumé de Scènes Récentes (24h)</div>
+            <div style="display: flex; justify-content: space-between;">
+                <div style="text-align: center;">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Logs Créés</div>
+                </div>
+                <div style="text-align: center;">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Logs Consultés</div>
+                </div>
+                <div style="text-align: center;">
+                    <div class="stat-value">1</div>
+                    <div class="stat-label">Risque Signalé</div>
+                </div>
+            </div>
+        </div>
+
+        <a href="#" class="action-button">➕ NOUVEAU LOG DE SCÈNE</a>
+        <a href="#" class="action-button" style="background-color: #007bff;">🗺️ CARTE DES DANGERS</a>
+    </div>
+
+    <div class="footer">
+        Prototype PWA développé par Alain Leblanc.
+    </div>
+</body>
+</html>
