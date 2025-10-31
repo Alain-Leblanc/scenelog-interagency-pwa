@@ -21,7 +21,7 @@ const auth = getAuth(app);
 // Rend la fonction d'authentification et de déconnexion globale (pour index.html)
 window.auth = auth;
 
-// CHEMIN D'ACCÈS PUBLIC SYNCHRONISÉ AVEC LE LIEN DE DÉPLOIEMENT ACTIF (SOLUTION FINALE)
+// CHEMIN D'ACCÈS PUBLIC SYNCHRONISÉ AVEC LE LIEN DE DÉPLOIEMENT ACTIF
 // Basé sur votre lien de déploiement réel : /scenelog-interagency-pwa/
 const BASE_URL_ABSOLUE = '/scenelog-interagency-pwa/';
 
@@ -42,11 +42,13 @@ function loginAgent(email, password) {
         });
 }
 
-// Fonction de DÉCONNEXION qui redirige correctement (SOLUTION FINALE)
+// Fonction de DÉCONNEXION qui redirige correctement (CONTOURNEMENT DE L'ERREUR 404)
 window.logoutAgent = function() {
     signOut(auth).then(() => {
-        // Déconnexion réussie. On force la redirection vers la page de connexion avec le chemin synchronisé.
-        window.location.href = BASE_URL_ABSOLUE + "connexion.html";
+        // Déconnexion réussie. On force la redirection vers la page d'index (la page de sécurité).
+        // Le script 'onAuthStateChanged' va immédiatement détecter l'absence d'utilisateur 
+        // et effectuer la redirection finale et sécurisée vers connexion.html.
+        window.location.href = BASE_URL_ABSOLUE + "index.html"; 
     }).catch((error) => {
         console.error("Erreur de déconnexion:", error);
         alert("Erreur lors de la déconnexion.");
