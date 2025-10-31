@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SceneLog - Tableau de Bord Agent</title>
+    <title>SceneLog PWA - Tableau de Bord Agent</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
         .header { background-color: #0056b3; color: white; padding: 15px; text-align: center; }
-        .header h1 { margin: 0; font-size: 1.2em; }
         .dashboard { padding: 20px; }
-        .card { background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; padding: 15px; }
-        .card-title { font-size: 1.1em; font-weight: bold; color: #0056b3; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        .stat-value { font-size: 2em; font-weight: bold; color: #333; }
-        .stat-label { font-size: 0.9em; color: #666; }
-        .action-button { display: block; width: 100%; padding: 15px; background-color: #28a745; color: white; border: none; border-radius: 5px; text-align: center; text-decoration: none; font-size: 1.1em; margin-top: 15px; }
-        .footer { text-align: center; padding: 10px; font-size: 0.8em; color: #999; }
+        .card { background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; padding: 15px; border-top: 5px solid #0056b3; }
+        .card-title { font-size: 1.2em; font-weight: bold; color: #0056b3; margin-bottom: 10px; }
+        .stat-label { font-size: 0.9em; color: #666; margin-top: 5px; }
+        .stat-value { font-size: 1.5em; font-weight: bold; color: #333; }
+        .action-button { display: block; width: 100%; padding: 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; text-align: center; text-decoration: none; font-size: 1.1em; margin-top: 10px; }
+        .action-button.danger { background-color: #dc3545; }
+        .action-button:hover { opacity: 0.9; }
+        .status-card { border-top: 5px solid orange; }
+        .status-card .stat-label { color: orange; font-weight: bold; }
+        .footer { text-align: center; padding: 10px; font-size: 0.8em; color: #999; border-top: 1px solid #eee; margin-top: 20px; }
+        .center-between { display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
@@ -23,16 +27,20 @@
     </div>
 
     <div class="dashboard">
-        <div class="card">
-            <div class="card-title">Statut d'Activité</div>
+        
+        <div class="card status-card">
+            <div class="card-title center-between">
+                <span>Statut d'Activité</span> 
+                <a href="connexion.html" class="action-button danger" style="padding: 5px 10px; width: auto; font-size: 0.9em; margin: 0;">DÉCONNECTÉ (Simulé)</a>
+            </div>
+            
             <p>Agent : **Alain Leblanc**</p>
             <p>Date/Heure : **31/10/2025 à 21:05** (Heure de Calais)</p>
-            <a href="#" class="action-button" style="background-color: orange;">🔴 DÉCONNECTÉ (Simulé)</a>
         </div>
 
         <div class="card">
             <div class="card-title">Résumé de Scènes Récentes (24h)</div>
-            <div style="display: flex; justify-content: space-between;">
+            <div class="center-between">
                 <div style="text-align: center;">
                     <div class="stat-value">3</div>
                     <div class="stat-label">Logs Créés</div>
@@ -43,7 +51,7 @@
                 </div>
                 <div style="text-align: center;">
                     <div class="stat-value">1</div>
-                    <div class="stat-label">Risque Signalé</div>
+                    <div class="stat-label action-button danger" style="background-color: #dc3545; color: white; padding: 5px 10px; margin: 0; font-weight: normal; font-size: 0.9em;">Risque Signalé</div>
                 </div>
             </div>
         </div>
@@ -55,5 +63,30 @@
     <div class="footer">
         Prototype PWA développé par Alain Leblanc.
     </div>
-</body>
-</html>
+
+    <script type="module">
+        // Importe les fonctions nécessaires de Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+        
+        // Configuration Firebase (VOS CLÉS)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ_-iukfMVZmAUoEf-hJ_2TVccrrWbPmA", 
+            authDomain: "scenelog-app.firebaseapp.com",
+            projectId: "scenelog-app",
+            storageBucket: "scenelog-app.firebasestorage.app",
+            messagingSenderId: "503542077517",
+            appId: "1:503542077517:web:976e59282abba897f8e404"
+        };
+
+        // Initialisation de Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Vérification de l'état de l'utilisateur au chargement
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // Si l'utilisateur n'est PAS connecté, redirection immédiate vers la page de connexion
+                window.location.href = "connexion.html";
+            }
+            // Si l
