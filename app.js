@@ -22,7 +22,7 @@ const auth = getAuth(app);
 window.auth = auth;
 
 // CHEMIN D'ACCÈS PUBLIC SYNCHRONISÉ AVEC LE LIEN DE DÉPLOIEMENT ACTIF
-// Basé sur votre lien de déploiement réel : /scenelog-interagency-pwa/
+// Basé sur le nom du déploiement actuel : /scenelog-interagency-pwa/
 const BASE_URL_ABSOLUE = '/scenelog-interagency-pwa/';
 
 // Fonction de connexion sécurisée
@@ -42,13 +42,13 @@ function loginAgent(email, password) {
         });
 }
 
-// Fonction de DÉCONNEXION qui redirige correctement (CONTOURNEMENT DE L'ERREUR 404)
+// Fonction de DÉCONNEXION qui redirige correctement (CONTOURNEMENT ULTIME DU PROBLÈME DE CHEMIN)
 window.logoutAgent = function() {
     signOut(auth).then(() => {
-        // Déconnexion réussie. On force la redirection vers la page d'index (la page de sécurité).
-        // Le script 'onAuthStateChanged' va immédiatement détecter l'absence d'utilisateur 
-        // et effectuer la redirection finale et sécurisée vers connexion.html.
-        window.location.href = BASE_URL_ABSOLUE + "index.html"; 
+        // Déconnexion réussie. Redirection vers la racine du domaine (ex: https://alain-leblanc.github.io/)
+        // Ceci force le navigateur à redémarrer le processus d'URL, évitant l'erreur 404.
+        // La fonction onAuthStateChanged se chargera de la redirection finale vers connexion.html.
+        window.location.href = "/"; 
     }).catch((error) => {
         console.error("Erreur de déconnexion:", error);
         alert("Erreur lors de la déconnexion.");
